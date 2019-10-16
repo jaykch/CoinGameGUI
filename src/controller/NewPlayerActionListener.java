@@ -9,15 +9,16 @@ import javax.swing.JTextField;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import view.PullDownMenu;
+import view.ViewModel;
 
 public class NewPlayerActionListener implements ActionListener {
 	GameEngine gameEngine = null;
 	PullDownMenu pullDownMenu = null;
 	private Integer lastID;
 
-	public NewPlayerActionListener(GameEngine gameEngine, PullDownMenu pullDownMenu) {
-		this.pullDownMenu = pullDownMenu;
-		this.gameEngine = gameEngine;
+	public NewPlayerActionListener(ViewModel viewModel) {
+		this.pullDownMenu = viewModel.getPullDownMenu();
+		this.gameEngine = viewModel.getGameEngine();
 		this.lastID = gameEngine.getAllPlayers().size();
 	}
 

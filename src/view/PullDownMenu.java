@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 
-import controller.RemoveBetActionListener;
 import controller.SpinActionListener;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;

@@ -15,34 +15,44 @@ import model.interfaces.Player;
 @SuppressWarnings("serial")
 public class SummaryPanel extends JPanel {
 
-	ArrayList<JLabel> playerSum = new ArrayList<JLabel>();
-	
-	private JLabel statusLabel1 = new JLabel("Shit Works", JLabel.LEFT);
+	private GameEngine gameEngine;
+	private ArrayList<JLabel> playerLabels = new ArrayList<JLabel>();
 
+	public SummaryPanel(GameEngine gameEngine) {
 
-	public SummaryPanel(GameEngine engine) {
-		setLayout(new GridLayout(10, 1)); // Up to 10 players can be displayed
+		this.gameEngine = gameEngine;
+
+		// Note: Maximum 10 players can be displayed
+		setLayout(new GridLayout(10, 1));
 		Border blackBorder = BorderFactory.createLineBorder(Color.BLACK);
-		Border grayBorder = BorderFactory.createLineBorder(Color.BLUE);
 		setBorder(blackBorder);
-		add(statusLabel1);
 
-
-		createLabels(engine);
-
-		for (JLabel jLabel : playerSum) {
-			add(jLabel);
-			jLabel.setBorder(grayBorder);
-		}
+		update();
 	}
 
-	public void createLabels(GameEngine engine) {
-		for (Player player : engine.getAllPlayers()) {
-			String playerDets = "";
+	// Get all player details and generate labels accordingly
+	public void update() {
+		playerLabels.clear();
+		this.removeAll();
 
-			playerDets += String.format("%s, points = %d\n", player.getPlayerName(), player.getPoints());
+		Border grayBorder = BorderFactory.createLineBorder(Color.BLUE);
+		for (Player player : this.gameEngine.getAllPlayers()) {
+			String playerDetails = "";
 
-			playerSum.add(new JLabel(playerDets));
+			if (player.getBetType() == null) {
+				playerDetails += "<html>" + player.getPlayerName() + " Points: " + player.getPoints() + "<br/>"
+						+ "Bet: No bet made!" + "</html>";
+			} else {
+				playerDetails += "<html>" + player.getPlayerName() + " Points: " + player.getPoints() + "<br/>"
+						+ "Bet Type: " + player.getBetType() + " Bet: " + player.getBet() + "</html>";
+			}
+
+			playerLabels.add(new JLabel(playerDetails));
+		}
+
+		for (JLabel jLabel : playerLabels) {
+			add(jLabel);
+			jLabel.setBorder(grayBorder);
 		}
 	}
 }

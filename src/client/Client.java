@@ -15,6 +15,7 @@ public class Client {
 	Player player1 = new SimplePlayer("1", "The Coin Master", 100);
 	Player player2 = new SimplePlayer("2", "The Dabbler", 300);
 	Player player3 = new SimplePlayer("3", "The Loser", 300);
+	
 
 	gameEngine.addPlayer(player1);
 	gameEngine.addPlayer(player2);

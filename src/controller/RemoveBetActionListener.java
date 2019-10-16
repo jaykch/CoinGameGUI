@@ -6,12 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import view.PullDownMenu;
+import view.ViewModel;
 
 public class RemoveBetActionListener implements ActionListener {
 	PullDownMenu pullDownMenu = null;
 
-	public RemoveBetActionListener(PullDownMenu pullDownMenu) {
-		this.pullDownMenu = pullDownMenu;
+	public RemoveBetActionListener(ViewModel viewModel) {
+		this.pullDownMenu = viewModel.getPullDownMenu();
 	}
 
 	@Override

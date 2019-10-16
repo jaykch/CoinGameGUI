@@ -9,14 +9,15 @@ import javax.swing.SwingUtilities;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import view.PullDownMenu;
+import view.ViewModel;
 
 public class RemovePlayerActionListener implements ActionListener {
 	GameEngine gameEngine = null;
 	PullDownMenu pullDownMenu = null;
 
-	public RemovePlayerActionListener(GameEngine gameEngine, PullDownMenu pullDownMenu) {
-		this.pullDownMenu = pullDownMenu;
-		this.gameEngine = gameEngine;
+	public RemovePlayerActionListener(ViewModel viewModel) {
+		this.pullDownMenu = viewModel.getPullDownMenu();
+		this.gameEngine = viewModel.getGameEngine();
 	}
 
 	@Override

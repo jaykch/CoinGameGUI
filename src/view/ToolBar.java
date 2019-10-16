@@ -20,12 +20,12 @@ public class ToolBar extends JToolBar{
 	private JButton removeBet = new JButton("Remove Bet");
 
 	
-	public ToolBar(GameEngine gameEngine, PullDownMenu pullDownMenu) {	
+	public ToolBar(ViewModel viewModel) {	
 		
-		NewPlayerActionListener newPlayerActionListener =  new NewPlayerActionListener(gameEngine, pullDownMenu);
-		RemovePlayerActionListener removePlayerActionListener =  new RemovePlayerActionListener(gameEngine, pullDownMenu);
-		AddBetActionListener addBetActionListener =  new AddBetActionListener(gameEngine, pullDownMenu);
-		RemoveBetActionListener removeBetActionListener =  new RemoveBetActionListener(pullDownMenu);
+		NewPlayerActionListener newPlayerActionListener =  new NewPlayerActionListener(viewModel);
+		RemovePlayerActionListener removePlayerActionListener =  new RemovePlayerActionListener(viewModel);
+		AddBetActionListener addBetActionListener =  new AddBetActionListener(viewModel);
+		RemoveBetActionListener removeBetActionListener =  new RemoveBetActionListener(viewModel);
 
 		addPlayer.setPreferredSize(new Dimension(300,40));
 		removePlayer.setPreferredSize(new Dimension(300,40));

@@ -8,8 +8,8 @@ import model.interfaces.GameEngine;
 import view.PullDownMenu;
 
 public class SpinActionListener implements ActionListener {
-	GameEngine gameEngine = null;
-	PullDownMenu pullDownMenu = null;
+	private GameEngine gameEngine;
+	private PullDownMenu pullDownMenu;
 
 	private int initialDelay1 = 100;
 	private int finalDelay1 = 1000;
@@ -33,11 +33,5 @@ public class SpinActionListener implements ActionListener {
 						initialDelay2, finalDelay2, delayIncrement2);
 			}
 		}.start();
-
-		try {
-
-		} catch (NullPointerException e) {
-			// do nothing
-		}
 	}
 }

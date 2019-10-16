@@ -8,14 +8,18 @@ import javax.swing.JTextField;
 import model.enumeration.BetType;
 import model.interfaces.GameEngine;
 import view.PullDownMenu;
+import view.ViewModel;
 
 public class AddBetActionListener implements ActionListener {
-	GameEngine gameEngine = null;
-	PullDownMenu pullDownMenu = null;
+	
+	private ViewModel viewModel;
+	private GameEngine gameEngine;
+	private PullDownMenu pullDownMenu;
 
-	public AddBetActionListener(GameEngine gameEngine, PullDownMenu pullDownMenu) {
-		this.pullDownMenu = pullDownMenu;
-		this.gameEngine = gameEngine;
+	public AddBetActionListener(ViewModel viewModel) {
+		this.viewModel = viewModel;
+		this.pullDownMenu = viewModel.getPullDownMenu();
+		this.gameEngine = viewModel.getGameEngine();
 	}
 
 	@Override
@@ -25,16 +29,17 @@ public class AddBetActionListener implements ActionListener {
 
 		JTextField betInput = new JTextField();
 
-		Object[] fields = { "Select Bet Type", betType, "Add Points:", betInput };
-		JOptionPane.showConfirmDialog(null, fields, "Add Bet", JOptionPane.OK_CANCEL_OPTION);
+		try {
 
-		int bet = Integer.parseInt(betInput.getText());
+			Object[] fields = { "Select Bet Type", betType, "Add Points:", betInput };
+			JOptionPane.showConfirmDialog(null, fields, "Add Bet", JOptionPane.OK_CANCEL_OPTION);
 
-		if (bet <= 0) {
-			JOptionPane.showMessageDialog(null, "Invalid Bet - Your bet has been reset", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		} else {
-			try {
+			int bet = Integer.parseInt(betInput.getText());
+
+			if (bet <= 0) {
+				JOptionPane.showMessageDialog(null, "Error: Bet cannot be lower than or equal to 0", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
 
 				switch (betType.getSelectedItem().toString()) {
 
@@ -55,12 +60,13 @@ public class AddBetActionListener implements ActionListener {
 					JOptionPane.showMessageDialog(null, "No Bet  Type Selected", "Error", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-
-			} catch (NumberFormatException e) {
-
-				JOptionPane.showMessageDialog(null, "Not the correct input type", "Error", JOptionPane.ERROR_MESSAGE);
-
+				viewModel.updateSummaryPanel();
 			}
+
+		} catch (NumberFormatException e) {
+
+			JOptionPane.showMessageDialog(null, "Error: Invalid Bet! Please select a valid bet.", "Error", JOptionPane.ERROR_MESSAGE);
+
 		}
 
 	}
