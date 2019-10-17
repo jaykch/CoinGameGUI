@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 
+import controller.PlayerSelectionItemListener;
 import controller.SpinActionListener;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -15,23 +16,23 @@ import model.interfaces.Player;
 public class PullDownMenu extends JMenuBar {
 	private JComboBox<String> playerList = new JComboBox<String>();
 	private GameEngine gameEngine;
-	JButton spinButton = new JButton("Spin");
+	private JButton spinButton = new JButton("Spin");
 
-
-	public PullDownMenu(GameEngine gameEngine) {
-		this.gameEngine = gameEngine;
-		SpinActionListener spinActionListener =  new SpinActionListener(gameEngine, this);
+	public PullDownMenu(GameFrame gameFrame) {
+		this.gameEngine = gameFrame.getGameEngine();
 
 		populate();
-		
-		
+
 		playerList.setPreferredSize(new Dimension(150, 0));
 		this.setLayout(new BorderLayout());
 		this.add(playerList, BorderLayout.CENTER);
 		spinButton.setPreferredSize(new Dimension(100, 40));
 		this.add(spinButton, BorderLayout.WEST);
-		
+
+		SpinActionListener spinActionListener = new SpinActionListener(gameFrame);
+		PlayerSelectionItemListener playerSelectionItemListener = new PlayerSelectionItemListener(gameFrame);
 		spinButton.addActionListener(spinActionListener);
+		playerList.addActionListener(playerSelectionItemListener);
 	}
 
 	public void populate() {
@@ -51,6 +52,10 @@ public class PullDownMenu extends JMenuBar {
 	public Player getSelectedPlayer() {
 		String playerID = this.playerList.getSelectedItem().toString().substring(0, 1);
 		return gameEngine.getPlayer(playerID);
+	}
+
+	public JButton getSpinButton() {
+		return this.spinButton;
 	}
 
 }

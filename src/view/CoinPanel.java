@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class CoinPanel extends JPanel {
@@ -14,8 +15,20 @@ public class CoinPanel extends JPanel {
 	private JLabel coin2 = new JLabel();
 	private ImageIcon heads = new ImageIcon("img/heads.png");
 	private ImageIcon tails = new ImageIcon("img/tails.png");
+	private JLabel playerLabel;
 
-	public CoinPanel() {
+	public CoinPanel(String playerName) {
+
+		// Create a label with player name so the user knows which players coins they
+		// are currently viewing
+		playerLabel = new JLabel(playerName, JLabel.LEFT);
+		// Add Padding Around Label
+		playerLabel.setBorder(new EmptyBorder(15, 15, 15, 15));// top,left,bottom,right
+		// Add background color
+		playerLabel.setOpaque(true);
+		playerLabel.setBackground(Color.LIGHT_GRAY);
+		;
+
 		this.setLayout(new BorderLayout());
 		add(new StatusBar(), BorderLayout.SOUTH);
 
@@ -23,6 +36,7 @@ public class CoinPanel extends JPanel {
 		coin2.setIcon(tails);
 		add(coin1, BorderLayout.WEST);
 		add(coin2, BorderLayout.EAST);
+		add(playerLabel, BorderLayout.NORTH);
 	}
 
 	public void setCoin1(String face) {
@@ -33,7 +47,7 @@ public class CoinPanel extends JPanel {
 			coin1.setIcon(tails);
 		}
 	}
-	
+
 	public void setCoin2(String face) {
 
 		if (face.equals("HEADS")) {

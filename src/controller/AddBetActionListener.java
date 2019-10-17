@@ -7,26 +7,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.enumeration.BetType;
 import model.interfaces.GameEngine;
-import view.PullDownMenu;
-import view.ViewModel;
+import model.interfaces.Player;
+import view.GameFrame;
 
 public class AddBetActionListener implements ActionListener {
-	
-	private ViewModel viewModel;
-	private GameEngine gameEngine;
-	private PullDownMenu pullDownMenu;
 
-	public AddBetActionListener(ViewModel viewModel) {
-		this.viewModel = viewModel;
-		this.pullDownMenu = viewModel.getPullDownMenu();
-		this.gameEngine = viewModel.getGameEngine();
+	private GameEngine gameEngine;
+	private Player selectedPlayer;;
+	private GameFrame gameFrame;
+
+	public AddBetActionListener(GameFrame gameFrame) {
+		this.gameFrame = gameFrame;
+		this.gameEngine = gameFrame.getGameEngine();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent AE) {
+		this.selectedPlayer = this.gameFrame.getPullDownMenu().getSelectedPlayer();
+
 		String[] betTypes = { "Coin1", "Coin2", "Both", "No Bet" };
 		JComboBox<String> betType = new JComboBox<String>(betTypes);
-
 		JTextField betInput = new JTextField();
 
 		try {
@@ -44,30 +44,36 @@ public class AddBetActionListener implements ActionListener {
 				switch (betType.getSelectedItem().toString()) {
 
 				case "Coin1":
-					gameEngine.placeBet(pullDownMenu.getSelectedPlayer(), bet, BetType.COIN1);
+					this.placeBet(selectedPlayer, BetType.COIN1, bet);
 					break;
 
 				case "Coin2":
-					gameEngine.placeBet(pullDownMenu.getSelectedPlayer(), bet, BetType.COIN2);
+					this.placeBet(selectedPlayer, BetType.COIN2, bet);
 					break;
 				case "Both":
-					gameEngine.placeBet(pullDownMenu.getSelectedPlayer(), bet, BetType.BOTH);
+					this.placeBet(selectedPlayer, BetType.BOTH, bet);
 					break;
 				case "No Bet":
-					gameEngine.placeBet(pullDownMenu.getSelectedPlayer(), bet, BetType.NO_BET);
+					this.placeBet(selectedPlayer, BetType.NO_BET, bet);
 					break;
 				default:
 					JOptionPane.showMessageDialog(null, "No Bet  Type Selected", "Error", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-				viewModel.updateSummaryPanel();
+				this.gameFrame.getSummaryPanel().update();
 			}
 
 		} catch (NumberFormatException e) {
 
-			JOptionPane.showMessageDialog(null, "Error: Invalid Bet! Please select a valid bet.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Invalid Bet! Please select a valid bet.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 
 		}
 
+	}
+
+	public void placeBet(Player player, BetType betType, int bet) {
+		gameEngine.placeBet(player, bet, betType);
+		gameFrame.getBetValidator().addPlayerBetStatus(player, true);
 	}
 }

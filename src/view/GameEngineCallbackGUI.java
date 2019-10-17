@@ -18,16 +18,19 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 	public void playerCoinUpdate(Player player, Coin coin, GameEngine engine) {
 
 		if (coin.getNumber() == 1) {
-			this.gameFrame.getCoinPanel().setCoin1(coin.getFace().toString());
+			this.gameFrame.getActiveCoinPanel().setCoin1(coin.getFace().toString());
 		} else {
-			this.gameFrame.getCoinPanel().setCoin2(coin.getFace().toString());
+			this.gameFrame.getActiveCoinPanel().setCoin2(coin.getFace().toString());
 		}
 	}
 
 	@Override
 	public void spinnerCoinUpdate(Coin coin, GameEngine engine) {
-		// TODO Auto-generated method stub
-
+		if (coin.getNumber() == 1) {
+			this.gameFrame.getSpinnerCoinPanel().setCoin1(coin.getFace().toString());
+		} else {
+			this.gameFrame.getSpinnerCoinPanel().setCoin2(coin.getFace().toString());
+		}
 	}
 
 	@Override

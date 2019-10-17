@@ -3,27 +3,25 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
+import view.GameFrame;
 import view.PullDownMenu;
-import view.ViewModel;
 
 public class RemovePlayerActionListener implements ActionListener {
-	GameEngine gameEngine = null;
-	PullDownMenu pullDownMenu = null;
+	private GameEngine gameEngine;
+	private PullDownMenu pullDownMenu;
 
-	public RemovePlayerActionListener(ViewModel viewModel) {
-		this.pullDownMenu = viewModel.getPullDownMenu();
-		this.gameEngine = viewModel.getGameEngine();
+	public RemovePlayerActionListener(GameFrame gameFrame) {
+		this.pullDownMenu = gameFrame.getPullDownMenu();
+		this.gameEngine = gameFrame.getGameEngine();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent AE) {
 		int confirm = JOptionPane.showConfirmDialog(null,
-				"Are you sure you would like to remove " + pullDownMenu.getSelectedPlayer().getPlayerName(),
+				"Are you sure yomu would like to remove " + pullDownMenu.getSelectedPlayer().getPlayerName(),
 				"Remove Player", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (confirm == JOptionPane.YES_OPTION) {
