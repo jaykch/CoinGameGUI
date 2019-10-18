@@ -23,7 +23,7 @@ public class AddBetActionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent AE) {
-		this.selectedPlayer = this.gameFrame.getPullDownMenu().getSelectedPlayer();
+		this.selectedPlayer = this.gameFrame.getPlayerMenu().getSelectedPlayer();
 
 		String[] betTypes = { "Coin1", "Coin2", "Both", "No Bet" };
 		JComboBox<String> betType = new JComboBox<String>(betTypes);
@@ -36,9 +36,9 @@ public class AddBetActionListener implements ActionListener {
 
 			int bet = Integer.parseInt(betInput.getText());
 
-			if (bet <= 0) {
-				JOptionPane.showMessageDialog(null, "Error: Bet cannot be lower than or equal to 0", "Error",
-						JOptionPane.ERROR_MESSAGE);
+			if (bet < 0 || bet > selectedPlayer.getPoints()) {
+				JOptionPane.showMessageDialog(null, "Error: Bet cannot be lower than 0 or greater than current points",
+						"Error", JOptionPane.ERROR_MESSAGE);
 			} else {
 
 				switch (betType.getSelectedItem().toString()) {
@@ -55,17 +55,21 @@ public class AddBetActionListener implements ActionListener {
 					break;
 				case "No Bet":
 					this.placeBet(selectedPlayer, BetType.NO_BET, bet);
+					gameFrame.getSpinValidator().addPlayerSpinStatus(selectedPlayer, true);
 					break;
 				default:
-					JOptionPane.showMessageDialog(null, "No Bet  Type Selected", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, selectedPlayer.getPlayerName() + "has not made a bet yet!",
+							"Error", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-				this.gameFrame.getSummaryPanel().update();
+				gameFrame.getSummaryPanel().update();
+				gameFrame.getStatusBar().setStatus(selectedPlayer.getPlayerName() + " made a bet!");
 			}
 
 		} catch (NumberFormatException e) {
 
-			JOptionPane.showMessageDialog(null, "Error: Invalid Bet! Please select a valid bet.", "Error",
+			JOptionPane.showMessageDialog(null,
+					"Error: Invalid Bet! Please select a valid bet. (Add 0 points if no bet is selected)", "Error",
 					JOptionPane.ERROR_MESSAGE);
 
 		}

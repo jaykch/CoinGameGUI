@@ -1,9 +1,7 @@
 package client;
 
 import model.GameEngineImpl;
-import model.SimplePlayer;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 import view.GameEngineCallbackGUI;
 import view.GameEngineCallbackImpl;
 

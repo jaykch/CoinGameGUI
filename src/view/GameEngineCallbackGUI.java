@@ -22,6 +22,7 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 		} else {
 			this.gameFrame.getActiveCoinPanel().setCoin2(coin.getFace().toString());
 		}
+
 	}
 
 	@Override
@@ -31,18 +32,24 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 		} else {
 			this.gameFrame.getSpinnerCoinPanel().setCoin2(coin.getFace().toString());
 		}
+
 	}
 
 	@Override
 	public void playerResult(Player player, CoinPair coinPair, GameEngine engine) {
-		// TODO Auto-generated method stub
+		gameFrame.getSpinValidator().addPlayerSpinResults(player, coinPair);
+		gameFrame.getSummaryPanel().update();
 
 	}
 
 	@Override
 	public void spinnerResult(CoinPair coinPair, GameEngine engine) {
-		// TODO Auto-generated method stub
-
+		gameFrame.getSpinValidator().setSpinnerSpunStatus(true);
+		gameFrame.getSpinValidator().setSpinnerSpunResult(coinPair);
+		gameFrame.getSummaryPanel().update();
+		gameFrame.getStatusBar().setStatus("Game results have been listed!");
+		gameFrame.removeNoPointsPlayers();
+		gameFrame.resetGame();
 	}
 
 }

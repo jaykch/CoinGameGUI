@@ -28,7 +28,7 @@ public class SpinActionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent AE) {
-		this.selectedPlayer = this.gameFrame.getPullDownMenu().getSelectedPlayer();
+		this.selectedPlayer = this.gameFrame.getPlayerMenu().getSelectedPlayer();
 
 		new Thread() {
 
@@ -36,38 +36,49 @@ public class SpinActionListener implements ActionListener {
 			public void run() {
 				if (gameFrame.getBetValidator().checkPlayerBetStatus(selectedPlayer)) {
 
-					if (!gameFrame.getSpinValidator().checkPlayerBetStatus(selectedPlayer)) {
-						// Set Spin status to true so user cannot spin coins again
-						gameFrame.getSpinValidator().addPlayerSpinStatus(selectedPlayer, true);
+					if (!gameFrame.getSpinValidator().checkPlayerSpinStatus(selectedPlayer)) {
 
-						// Set active coin panel to show the spinning coins only on that panel
-						gameFrame.setActiveCoinPanel(gameFrame.getPanelHandler()
-								.getPlayerPanel(gameFrame.getPullDownMenu().getSelectedPlayer()));
-
-						// Disable spin button while player is spinning
-						gameFrame.getPullDownMenu().getSpinButton().setEnabled(false);
-						gameEngine.spinPlayer(selectedPlayer, initialDelay1, finalDelay1, delayIncrement1,
-								initialDelay2, finalDelay2, delayIncrement2);
-
+						this.playerHandler();
 						this.spinnerHandler();
 
-						// Enable spin button after spinning
-						gameFrame.getPullDownMenu().getSpinButton().setEnabled(true);
 					} else {
-						JOptionPane.showMessageDialog(null, "Error: Player has already spun!", "Error",
+						JOptionPane.showMessageDialog(null,
+								"Error: " + selectedPlayer.getPlayerName() + " has already spun or selected no bet!", "Error",
 								JOptionPane.ERROR_MESSAGE);
-
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(null, "Error: No Bet Type selected!", "Error",
+					JOptionPane.showMessageDialog(null,
+							"Error: " + selectedPlayer.getPlayerName() + "has not made a bet yet!", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
+			}
+
+			private void playerHandler() {
+				// Store players initial points before spin
+				gameFrame.getSpinValidator().setPlayerPointsBeforeSpin(selectedPlayer, selectedPlayer.getPoints());
+
+				// Set Spin status to true so user cannot spin coins again
+				gameFrame.getSpinValidator().addPlayerSpinStatus(selectedPlayer, true);
+
+				// Set active coin panel to show the spinning coins only on that panel
+				gameFrame.setActiveCoinPanel(
+						gameFrame.getPanelHandler().getPlayerPanel(gameFrame.getPlayerMenu().getSelectedPlayer()));
+
+				// Disable spin button while player is spinning
+				gameFrame.getPlayerMenu().getSpinButton().setEnabled(false);
+				gameFrame.getStatusBar().setStatus(selectedPlayer.getPlayerName() + " is spinnging coins!");
+				gameEngine.spinPlayer(selectedPlayer, initialDelay1, finalDelay1, delayIncrement1, initialDelay2,
+						finalDelay2, delayIncrement2);
+
+				// Enable spin button after spinning
+				gameFrame.getPlayerMenu().getSpinButton().setEnabled(true);
 			}
 
 			private void spinnerHandler() {
 
 				if (gameFrame.getSpinValidator().checkAllSpinStatus()) {
+					gameFrame.getStatusBar().setStatus("Spinner is spinning coins!");
 					gameEngine.spinSpinner(initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2,
 							delayIncrement2);
 				}

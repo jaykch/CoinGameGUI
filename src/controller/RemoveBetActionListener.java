@@ -2,11 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JOptionPane;
-
 import view.GameFrame;
-import view.PullDownMenu;
 
 public class RemoveBetActionListener implements ActionListener {
 	private GameFrame gameFrame;
@@ -17,7 +14,11 @@ public class RemoveBetActionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent AE) {
-		gameFrame.getPullDownMenu().getSelectedPlayer().resetBet();
+		gameFrame.getBetValidator().addPlayerBetStatus(gameFrame.getPlayerMenu().getSelectedPlayer(), false);
+		gameFrame.getPlayerMenu().getSelectedPlayer().resetBet();
+		gameFrame.getSummaryPanel().update();
+		gameFrame.getStatusBar()
+				.setStatus(gameFrame.getPlayerMenu().getSelectedPlayer().getPlayerName() + " reset their bet!");
 		JOptionPane.showMessageDialog(null, "Your bet has been reset!", "Success", JOptionPane.OK_OPTION);
 	}
 }

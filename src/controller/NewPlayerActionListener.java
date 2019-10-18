@@ -5,19 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
-import model.SimplePlayer;
 import model.interfaces.GameEngine;
+import model.interfaces.Player;
 import view.GameFrame;
-import view.PullDownMenu;
 
 public class NewPlayerActionListener implements ActionListener {
 	private GameEngine gameEngine;
-	private PullDownMenu pullDownMenu;
+	private GameFrame gameFrame;
 	private Integer lastID;
 
 	public NewPlayerActionListener(GameFrame gameFrame) {
-		this.pullDownMenu = gameFrame.getPullDownMenu();
+		this.gameFrame = gameFrame;
 		this.gameEngine = gameFrame.getGameEngine();
 		this.lastID = gameEngine.getAllPlayers().size();
 	}
@@ -30,13 +28,14 @@ public class NewPlayerActionListener implements ActionListener {
 		JOptionPane.showConfirmDialog(null, fields, "Add New Player", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			this.lastID++;
-			SimplePlayer newPlayer = new SimplePlayer(lastID.toString(), newPlayerName.getText(),
+			// Add created player to combo box and update the summary panel with new player
+			Player player = gameFrame.createPlayer(lastID.toString(), newPlayerName.getText(),
 					Integer.parseInt(newPlayerScore.getText()));
-			gameEngine.addPlayer(newPlayer);
-			
+			gameFrame.getPlayerMenu().addPlayer(player);
+			gameFrame.getStatusBar().setStatus("New player: " + player.getPlayerName() + " added to game!");
+			gameFrame.getSummaryPanel().update();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Not the correct input type", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		pullDownMenu.populate();
 	}
 }

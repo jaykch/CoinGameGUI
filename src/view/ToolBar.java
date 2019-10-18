@@ -32,7 +32,8 @@ public class ToolBar extends JToolBar{
 		RemoveBetActionListener removeBetActionListener =  new RemoveBetActionListener(gameFrame);
 
 		showSpinner.setMargin(new Insets(10, 50, 10, 50));
-		
+		showSpinner.setPreferredSize(new Dimension(100, 100));
+
 
 		add(showSpinner);
 		add(addPlayer);

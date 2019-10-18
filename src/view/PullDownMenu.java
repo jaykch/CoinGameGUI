@@ -1,61 +1,62 @@
 package view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
-import controller.PlayerSelectionItemListener;
-import controller.SpinActionListener;
-import model.interfaces.GameEngine;
-import model.interfaces.Player;
+import controller.AddBetActionListener;
+import controller.ExitActionListener;
+import controller.NewPlayerActionListener;
+import controller.RemoveBetActionListener;
+import controller.RemovePlayerActionListener;
+import controller.ShowSpinnerActionListener;
 
 @SuppressWarnings("serial")
 public class PullDownMenu extends JMenuBar {
-	private JComboBox<String> playerList = new JComboBox<String>();
-	private GameEngine gameEngine;
-	private JButton spinButton = new JButton("Spin");
+	
+	private JMenuItem showSpinner = new JMenuItem("Show Spinner");
+	private JMenuItem addPlayer = new JMenuItem("Add Player");
+	private JMenuItem removePlayer = new JMenuItem("Remove Player");
+	private JMenuItem addBet = new JMenuItem("Add Bet");
+	private JMenuItem removeBet = new JMenuItem("Remove Bet");
+	private JMenuItem exit = new JMenuItem("Exit");
 
-	public PullDownMenu(GameFrame gameFrame) {
-		this.gameEngine = gameFrame.getGameEngine();
+	
+	public PullDownMenu(GameFrame gameFrame) {	
+		ShowSpinnerActionListener showSpinnerActionListener =  new ShowSpinnerActionListener(gameFrame);
+		NewPlayerActionListener newPlayerActionListener =  new NewPlayerActionListener(gameFrame);
+		RemovePlayerActionListener removePlayerActionListener =  new RemovePlayerActionListener(gameFrame);
+		AddBetActionListener addBetActionListener =  new AddBetActionListener(gameFrame);
+		RemoveBetActionListener removeBetActionListener =  new RemoveBetActionListener(gameFrame);
+		ExitActionListener exitActionListener =  new ExitActionListener(gameFrame);
+		
+		JMenu menu = new JMenu("File");
+		
+		menu.setPreferredSize(new Dimension(120, 10));
+		menu.setOpaque(true);
+		menu.setBackground(Color.LIGHT_GRAY);
+		
+		menu.add(showSpinner);
+		menu.add(addPlayer);
+		menu.add(removePlayer);
+		menu.add(addBet);
+		menu.add(removeBet);
+	    menu.add(new JSeparator()); // SEPARATOR
+		menu.add(exit);
+		
+		showSpinner.addActionListener(showSpinnerActionListener);
+		addPlayer.addActionListener(newPlayerActionListener);
+		removePlayer.addActionListener(removePlayerActionListener);
+		addBet.addActionListener(addBetActionListener);
+		removeBet.addActionListener(removeBetActionListener);
+		exit.addActionListener(exitActionListener);
+		
+		add(menu);
 
-		populate();
-
-		playerList.setPreferredSize(new Dimension(150, 0));
-		this.setLayout(new BorderLayout());
-		this.add(playerList, BorderLayout.CENTER);
-		spinButton.setPreferredSize(new Dimension(100, 40));
-		this.add(spinButton, BorderLayout.WEST);
-
-		SpinActionListener spinActionListener = new SpinActionListener(gameFrame);
-		PlayerSelectionItemListener playerSelectionItemListener = new PlayerSelectionItemListener(gameFrame);
-		spinButton.addActionListener(spinActionListener);
-		playerList.addActionListener(playerSelectionItemListener);
-	}
-
-	public void populate() {
-
-		this.refreshList();
-
-		for (Player player : gameEngine.getAllPlayers()) {
-			playerList.addItem(player.getPlayerId() + ") " + player.getPlayerName());
-		}
-
-	}
-
-	public void refreshList() {
-		playerList.removeAllItems();
-	}
-
-	public Player getSelectedPlayer() {
-		String playerID = this.playerList.getSelectedItem().toString().substring(0, 1);
-		return gameEngine.getPlayer(playerID);
-	}
-
-	public JButton getSpinButton() {
-		return this.spinButton;
 	}
 
 }

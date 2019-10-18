@@ -2,8 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.File;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,10 +25,8 @@ public class CoinPanel extends JPanel {
 		// Add background color
 		playerLabel.setOpaque(true);
 		playerLabel.setBackground(Color.LIGHT_GRAY);
-		;
 
 		this.setLayout(new BorderLayout());
-		add(new StatusBar(), BorderLayout.SOUTH);
 
 		coin1.setIcon(heads);
 		coin2.setIcon(tails);
